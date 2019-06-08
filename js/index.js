@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
     // TIMER
 
-    let deadline = '2019-12-21';
+    let deadline = '2019-06-09';
 
     function getTimeRemaining(endtime) {
         let t = Date.parse(endtime) - Date.parse(new Date()),
@@ -59,7 +59,7 @@ window.addEventListener('DOMContentLoaded', function(){
               hours = timer.querySelector('.hours'),
               minutes = timer.querySelector('.minutes'),
               seconds = timer.querySelector('.seconds'),
-              timeInterval = setInterval(updateClock, 1000);
+              timeInterval = setTimeout(updateClock, 1000);
         
         function padStart(time){
             if(time < 10){
@@ -74,10 +74,13 @@ window.addEventListener('DOMContentLoaded', function(){
             hours.textContent = padStart(t.hours);
             minutes.textContent = padStart(t.minutes);
             seconds.textContent = padStart(t.seconds);
-            
+
+            setTimeout(updateClock, 1000);
+
             if (t.total <= 0){
-                clearInterval(timeInterval);
+                clearTimeout(timeInterval);
             }
+           
         }
     }
 
