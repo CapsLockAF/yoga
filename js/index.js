@@ -7,12 +7,31 @@ window.addEventListener('DOMContentLoaded', function(){
 
     function hideTabContent(a) {
         for (let i = a; i < tabContent.length; i++) {
-            tabContent[a].classList.remove('show');
-            tabContent[a].classList.add('hide');
+            tabContent[i].classList.remove('show');
+            tabContent[i].classList.add('hide');
         }
     }
 
     hideTabContent(1);
 
-    
+    function showTabContent(b) {
+        if (tabContent[b].classList.contains('hide')) {
+            tabContent[b].classList.remove('hide');
+            tabContent[b].classList.add('show');
+        }
+    }
+
+    wraptabs.addEventListener('click', function (event) {
+        const target = event.target;
+        console.log(target);
+        if (target && target.classList.contains('info-header-tab')) {
+            for (let i = 0; i < tabs.length; i++) {
+                if (target == tabs[i]) {
+                    hideTabContent(0);
+                    showTabContent(i);
+                    break;
+                }
+            }
+        }
+    });
 });
