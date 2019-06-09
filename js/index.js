@@ -1,6 +1,8 @@
 window.addEventListener('DOMContentLoaded', function(){
     'use strict';
 
+    //TABS________________________________________________________
+
     const wraptabs = document.querySelector('.info-header'),
           tabs = document.querySelectorAll('.info-header-tab'),
           tabContent =document.querySelectorAll('.info-tabcontent');
@@ -35,19 +37,19 @@ window.addEventListener('DOMContentLoaded', function(){
         }
     });
 
-    // TIMER
+    // TIMER_______________________________________________________
 
-    let deadline = '2019-06-09';
+    let deadline = '2019-06-09T20:00';
 
     function getTimeRemaining(endtime) {
-        let t = Date.parse(endtime) - Date.parse(new Date()),
-            seconds = Math.floor((t/1000) % 60),
-            minutes = Math.floor((t/1000/60) % 60),
-            hours = Math.floor((t/(1000*60*60)));
+        let x = Date.parse(endtime) - Date.parse(new Date()),
+            seconds = Math.floor((x/1000) % 60),
+            minutes = Math.floor((x/1000/60) % 60),
+            hours = Math.floor((x/(1000*60*60)));
             // hours = Math.floor((t/1000/60/60) % 24)
             // days = Math.floor((t/(1000*60*60*24)))
         return {
-            'total': t,
+            'total': x,
             'hours': hours,
             'minutes': minutes,
             'seconds': seconds
@@ -58,8 +60,7 @@ window.addEventListener('DOMContentLoaded', function(){
         const timer = document.querySelector(id),
               hours = timer.querySelector('.hours'),
               minutes = timer.querySelector('.minutes'),
-              seconds = timer.querySelector('.seconds'),
-              timeInterval = setTimeout(updateClock, 1000);
+              seconds = timer.querySelector('.seconds');
         
         function padStart(time){
             if(time < 10){
@@ -69,20 +70,44 @@ window.addEventListener('DOMContentLoaded', function(){
         }
 
         function updateClock() {
-            let t = getTimeRemaining(endtime);
-           
-            hours.textContent = padStart(t.hours);
-            minutes.textContent = padStart(t.minutes);
-            seconds.textContent = padStart(t.seconds);
+            
+            let timeInterval = setTimeout(function count() {
+                let t = getTimeRemaining(endtime);
+                hours.textContent = padStart(t.hours);
+                minutes.textContent = padStart(t.minutes);
+                seconds.textContent = padStart(t.seconds);
+                
+                if (t.total <= 0){
+                    clearTimeout(timeInterval);
+                    hours.textContent = '00';
+                    minutes.textContent = '00';
+                    seconds.textContent = '00';
+                    return;
+                }
 
-            setTimeout(updateClock, 1000);
-
-            if (t.total <= 0){
-                clearTimeout(timeInterval);
-            }
-           
+                setTimeout(count, 100);             
+                
+            }, 1000);
         }
+        
+        updateClock();      
     }
 
     setClock('#timer', deadline);
+
+    //MODAL___________________________________________
+
+    const more = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close');
+
+    more.addEventListener('click', function () {
+        overlay.style.display = 'block';
+        this.classList.add('more-splash');
+    });
+
+    close.addEventListener('click', function () {
+        overlay.style.display = 'none';
+        this.classList.remove('more-splash');
+    });
 });
